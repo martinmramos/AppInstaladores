@@ -2,8 +2,9 @@ package ProgramacionObjetos;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
-public class ParteDeTrabajo {
+public class ParteDeTrabajo implements Comparable<ParteDeTrabajo> {
 
     private String descripcion;
     private int horas;
@@ -54,11 +55,31 @@ public class ParteDeTrabajo {
         this.fechaDeCreacion = fechaDeCreacion;
     }
 
-    public double calcularCosteTotal(){
+    @Override
+    public int compareTo(ParteDeTrabajo other) {
+        if (this.fechaDeCreacion > other.getFechaDeCreacion()) return 1;
+        if (this.fechaDeCreacion < other.getFechaDeCreacion()) return -1;
+        return other.getDescripcion().compareTo(this.descripcion) * (-1);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ParteDeTrabajo)) return false;
+        ParteDeTrabajo that = (ParteDeTrabajo) o;
+        return getFechaDeCreacion() == that.getFechaDeCreacion() && Objects.equals(getDescripcion(), that.getDescripcion());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDescripcion(), getFechaDeCreacion());
+    }
+
+    public double calcularCosteTotal() {
         return horas * costeHora;
     }
 
-    public String getInfo(){
+    public String getInfo() {
         return "-PARTE DE TRABAJO-" +
                 "\nDescripción del trabajo: " + descripcion +
                 "\nHoras de trabajo: " + horas +
